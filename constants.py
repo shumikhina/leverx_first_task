@@ -1,6 +1,4 @@
-
-
-Path_rooms = 'Please, enter a file path for rooms:\n'
-Path_students = 'Please, enter a file path for students:\n'
-
-Choice_format = 'What kind a format you want to use? Press 1 to use JSON or press 2 to use XML:\n'
+PARSER_DESCRIPTION = 'Matching students to rooms'
+ROOMS_PATH_HELP_MESSAGE = 'Rooms file path'
+STUDENTS_PATH_HELP_MESSAGE = 'Students file path'
+OUTPUT_FORMAT_HELP_MESSAGE = 'Enter 1-JSON or 2-XML for file output format'
