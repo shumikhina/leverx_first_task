@@ -1,29 +1,36 @@
+import abc
 import json
 import xml.etree.cElementTree as xml
-import constants
 
 
-class Printer:
+class BasePrinter:
 
-    def _choose_format(self):
-        choice = None
-        formats = {
-            '1': self.save_json,
-            '2': self.save_xml
+    @abc.abstractmethod
+    def print(self, data) -> None:
+        pass
+
+
+class JSONOrXMLPrinter(BasePrinter):
+
+    def __init__(self, output_format):
+        self.output_format = output_format
+
+    def _get_output_method(self):
+        methods_map = {
+            '1': self.print_to_json,
+            '2': self.print_to_xml
         }
-        while choice not in formats:
-            choice = input(constants.Choice_format)
-        return formats[choice]
+        return methods_map[self.output_format]
 
     @staticmethod
-    def save_json(data):
+    def print_to_json(data):
         with open('file.json', 'w') as file:
             json.dump(data, file)
 
     @staticmethod
-    def save_xml(data):
+    def print_to_xml(data):
         root = xml.Element('Rooms')
-        for room in data:
+        for room in data.values():
             room_element = xml.SubElement(root, 'Room')
             xml.SubElement(room_element, 'Id').text = str(room['id'])
             xml.SubElement(room_element, 'Name').text = str(room['name'])
@@ -36,6 +43,5 @@ class Printer:
         file_xml = xml.ElementTree(root)
         file_xml.write('file.xml')
 
-    def save_file(self, data: list) -> None:
-        chosen_format = self._choose_format()
-        chosen_format(data)
+    def print(self, data) -> None:
+        self._get_output_method()(data)
